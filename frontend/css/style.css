@@ -1326,3 +1326,73 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 body.dark-mode input[type="date"] {
     color-scheme: dark;
 }
+/* ==============================
+   TASKFLOW HOME PAGE DESIGN
+================================ */
+
+.hero {
+    min-height: 75vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 60px 20px;
+    background: linear-gradient(135deg, #f5f6fc, #e9e7ff);
+}
+
+.hero h1 {
+    font-size: 48px;
+    color: #292747;
+    margin-bottom: 15px;
+}
+
+.hero p {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.hero-buttons .btn {
+    display: inline-block;
+    padding: 13px 28px;
+    background: #6555e8;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.hero-buttons .btn:hover {
+    background: #5141d0;
+    transform: translateY(-2px);
+}
+
+.hero-buttons .btn.secondary {
+    background: white;
+    color: #6555e8;
+    border: 1px solid #6555e8;
+}
+
+.hero-buttons .btn.secondary:hover {
+    background: #6555e8;
+    color: white;
+}
+
+@media (max-width: 600px) {
+    .hero h1 {
+        font-size: 32px;
+    }
+
+    .hero p {
+        font-size: 16px;
+    }
+}
