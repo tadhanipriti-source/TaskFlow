@@ -1490,3 +1490,21 @@ body.dark-mode input[type="date"] {
     color: #2563eb;
     text-decoration: none;
 }
+.password-box {
+    position: relative;
+    width: 100%;
+}
+
+.password-box input {
+    width: 100%;
+    padding: 12px 40px 12px 12px;
+    box-sizing: border-box;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}

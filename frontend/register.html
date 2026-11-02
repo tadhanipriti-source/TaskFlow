@@ -19,14 +19,38 @@
 
     <div class="auth-container">
         <form id="registerForm" class="auth-form">
+
             <h2>Create Account</h2>
             <p>Join TaskFlow and manage your tasks easily.</p>
 
-            <input type="text" id="name" placeholder="Full Name" required>
+            <input
+                type="text"
+                id="name"
+                placeholder="Full Name"
+                required
+            >
 
-            <input type="email" id="email" placeholder="Email Address" required>
+            <input
+                type="email"
+                id="email"
+                placeholder="Email Address"
+                required
+            >
 
-            <input type="password" id="password" placeholder="Password (Minimum 6 characters)" minlength="6" required>
+            <div class="password-box">
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Password (Minimum 6 characters)"
+                    minlength="6"
+                    required
+                >
+                <span
+                    class="toggle-password"
+                    onclick="togglePassword()"
+                    title="Show Password"
+                >👁️</span>
+            </div>
 
             <button type="submit" class="btn">Register</button>
 
@@ -36,8 +60,18 @@
                 Already have an account?
                 <a href="login.html">Login</a>
             </p>
+
         </form>
     </div>
+
+    <script>
+        function togglePassword() {
+            const password = document.getElementById("password");
+
+            password.type =
+                password.type === "password" ? "text" : "password";
+        }
+    </script>
 
     <script src="js/config.js"></script>
     <script src="js/auth.js"></script>

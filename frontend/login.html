@@ -35,12 +35,19 @@
                 required
             >
 
-            <input
-                type="password"
-                id="password"
-                placeholder="Password"
-                required
-            >
+            <div class="password-box">
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Password"
+                    required
+                >
+                <span
+                    class="toggle-password"
+                    onclick="togglePassword()"
+                    title="Show Password"
+                >👁️</span>
+            </div>
 
             <button type="submit" class="btn">
                 Login
@@ -56,6 +63,15 @@
         </form>
 
     </div>
+
+    <script>
+        function togglePassword() {
+            const password = document.getElementById("password");
+
+            password.type =
+                password.type === "password" ? "text" : "password";
+        }
+    </script>
 
     <script src="js/config.js"></script>
     <script src="js/auth.js"></script>
