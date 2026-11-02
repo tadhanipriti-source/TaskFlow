@@ -1,0 +1,687 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow - Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .header {
+            background: #fff;
+            padding: 12px 0;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .logo {
+            color: #6555e8;
+            font-size: 27px;
+            margin: 0;
+        }
+
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .header-nav > a {
+            color: #444;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .header-nav > a:hover,
+        .header-nav > a.active {
+            color: #6555e8;
+        }
+
+        .profile-dropdown {
+            position: relative;
+        }
+
+        #profileMenuBtn {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 7px 12px;
+            background: white;
+            border: 1px solid #e5e1f5;
+            border-radius: 10px;
+            cursor: pointer;
+            color: #333;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        #headerProfileImage {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #6555e8;
+            display: block;
+        }
+
+        #profileDropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            min-width: 190px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            overflow: hidden;
+            z-index: 9999;
+        }
+
+        #profileDropdown.show {
+            display: block !important;
+        }
+
+        #profileDropdown a,
+        #profileDropdown button {
+            display: block;
+            width: 100%;
+            padding: 13px 15px;
+            border: none;
+            background: white;
+            color: #333;
+            text-align: left;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        #profileDropdown a:hover,
+        #profileDropdown button:hover {
+            background: #f0edff;
+            color: #6555e8;
+        }
+
+        #editModal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        #editModal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            width: 100%;
+            max-width: 650px;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        #closeModalBtn {
+            width: 35px;
+            height: 35px;
+            border: none;
+            border-radius: 7px;
+            background: #777;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        body.dark-mode .header {
+            background: #222538;
+        }
+
+        body.dark-mode .header-nav > a {
+            color: #eee;
+        }
+
+        body.dark-mode .header-nav > a.active,
+        body.dark-mode .header-nav > a:hover {
+            color: #a99eff;
+        }
+
+        body.dark-mode #profileMenuBtn,
+        body.dark-mode #profileDropdown,
+        body.dark-mode #profileDropdown a,
+        body.dark-mode #profileDropdown button {
+            background: #292d42;
+            color: white;
+            border-color: #41465e;
+        }
+
+        body.dark-mode #profileDropdown a:hover,
+        body.dark-mode #profileDropdown button:hover {
+            background: #41465e;
+        }
+
+        body.dark-mode .modal-content {
+            background: #222538;
+            color: white;
+        }
+
+        .filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .filter-container input,
+        .filter-container select {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        input[type="date"] {
+            appearance: auto;
+            -webkit-appearance: auto;
+            cursor: pointer;
+        }
+
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            display: block;
+            cursor: pointer;
+            opacity: 1;
+        }
+
+        body.dark-mode input[type="date"] {
+            color-scheme: dark;
+        }
+
+        @media (max-width: 850px) {
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .header-nav {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header-nav {
+                gap: 12px;
+            }
+
+            .header-nav > a {
+                font-size: 13px;
+            }
+
+            #taskForm .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-dropdown {
+                width: 100%;
+            }
+
+            #profileDropdown {
+                left: 0;
+                right: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="container header-content">
+
+            <h2 class="logo">TaskFlow</h2>
+
+            <nav class="header-nav">
+
+                <a href="dashboard.html" class="active">Dashboard</a>
+                <a href="#myTasks">Tasks</a>
+                <a href="time-tracking.html">Time Tracking</a>
+                <a href="schedule.html">Schedule</a>
+
+                <div class="profile-dropdown">
+
+                    <button type="button" id="profileMenuBtn"
+                        aria-expanded="false">
+
+                        <img
+                            id="headerProfileImage"
+                            src="https://placehold.co/40x40?text=P"
+                            alt="Profile Photo"
+                        >
+
+                        <span id="headerProfileName">My Account</span>
+                        <span>▾</span>
+
+                    </button>
+
+                    <div id="profileDropdown">
+
+                        <a href="profile.html">My Profile</a>
+
+                        <button type="button" id="themeToggle">
+                            Dark Mode
+                        </button>
+
+                        <button type="button" id="logoutBtn">
+                            Logout
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </nav>
+        </div>
+    </header>
+
+
+    <!-- MAIN DASHBOARD -->
+    <main class="container dashboard-container">
+
+        <section class="welcome-section">
+            <h1>Welcome to TaskFlow!</h1>
+            <p>Manage your tasks and stay productive.</p>
+        </section>
+
+
+        <!-- STATISTICS -->
+        <section class="stats-container">
+
+            <div class="stat-card">
+                <h3>Total Tasks</h3>
+                <p id="totalTasks">0</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>Pending Tasks</h3>
+                <p id="pendingTasks">0</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>In Progress</h3>
+                <p id="inProgressTasks">0</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>Completed</h3>
+                <p id="completedTasks">0</p>
+            </div>
+
+        </section>
+
+
+        <!-- ADD TASK -->
+        <section class="task-form-section">
+
+            <h2>Add New Task</h2>
+
+            <form id="taskForm" enctype="multipart/form-data">
+
+                <div class="form-group">
+                    <label for="title">Task Title</label>
+                    <input
+                        type="text"
+                        id="title"
+                        placeholder="Enter task title"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea
+                        id="description"
+                        placeholder="Enter task description"
+                    ></textarea>
+                </div>
+
+                <div class="form-row">
+
+                    <div class="form-group">
+                        <label for="priority">Priority</label>
+                        <select id="priority" required>
+                            <option value="Low">Low</option>
+                            <option value="Medium" selected>Medium</option>
+                            <option value="High">High</option>
+                        </select>
+                    </div>
+
+                    <!-- ADDED STATUS FIELD -->
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select id="status" required>
+                            <option value="Pending" selected>Pending</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Completed">Completed</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dueDate">Due Date</label>
+                        <input type="date" id="dueDate">
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="attachment">Attachment</label>
+                    <input
+                        type="file"
+                        id="attachment"
+                        accept=".jpg,.jpeg,.png,.pdf"
+                    >
+                    <small>Allowed: JPG, JPEG, PNG and PDF (Max 5 MB)</small>
+                </div>
+
+                <button type="submit" class="btn-primary">
+                    Add Task
+                </button>
+
+                <p id="taskMessage"></p>
+
+            </form>
+        </section>
+
+
+        <!-- MY TASKS -->
+        <section class="tasks-section" id="myTasks">
+
+            <h2>My Tasks</h2>
+
+            <div class="filter-container">
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search tasks..."
+                >
+
+                <select id="statusFilter">
+                    <option value="">All Status</option>
+                    <option value="Pending">Pending</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                </select>
+
+                <select id="priorityFilter">
+                    <option value="">All Priority</option>
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                </select>
+
+            </div>
+
+            <div id="taskList" class="task-list">
+                <p>Loading tasks...</p>
+            </div>
+
+            <div id="pagination" class="pagination"></div>
+
+        </section>
+
+    </main>
+
+
+    <!-- EDIT TASK MODAL -->
+    <div id="editModal">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h2>Edit Task</h2>
+
+                <button type="button" id="closeModalBtn">
+                    &times;
+                </button>
+            </div>
+
+            <form id="editTaskForm">
+
+                <input type="hidden" id="editTaskId">
+
+                <div class="form-group">
+                    <label for="editTitle">Task Title</label>
+                    <input type="text" id="editTitle" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="editDescription">Description</label>
+                    <textarea id="editDescription"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="editStatus">Status</label>
+                    <select id="editStatus">
+                        <option value="Pending">Pending</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="editPriority">Priority</label>
+                    <select id="editPriority">
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="editDueDate">Due Date</label>
+                    <input type="date" id="editDueDate">
+                </div>
+
+                <div class="form-group">
+                    <label for="editAttachment">New Attachment</label>
+                    <input
+                        type="file"
+                        id="editAttachment"
+                        accept=".jpg,.jpeg,.png,.pdf"
+                    >
+                </div>
+
+                <button type="submit" class="btn-primary">
+                    Update Task
+                </button>
+
+                <p id="editMessage"></p>
+
+            </form>
+
+        </div>
+    </div>
+
+
+    <!-- JAVASCRIPT -->
+    <script src="js/config.js"></script>
+    <script src="js/tasks.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const token = localStorage.getItem("token");
+
+            if (!token) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            // PROFILE DROPDOWN
+            const profileMenuBtn =
+                document.getElementById("profileMenuBtn");
+
+            const profileDropdown =
+                document.getElementById("profileDropdown");
+
+            profileMenuBtn.addEventListener("click", function (event) {
+                event.stopPropagation();
+
+                const isOpen = profileDropdown.classList.toggle("show");
+
+                profileMenuBtn.setAttribute(
+                    "aria-expanded",
+                    isOpen ? "true" : "false"
+                );
+            });
+
+            profileDropdown.addEventListener("click", function (event) {
+                event.stopPropagation();
+            });
+
+            document.addEventListener("click", function () {
+                profileDropdown.classList.remove("show");
+                profileMenuBtn.setAttribute("aria-expanded", "false");
+            });
+
+
+            // LOAD HEADER PROFILE
+            async function loadHeaderProfile() {
+
+                try {
+                    const response = await fetch(
+                        `${API_BASE_URL}/api/auth/profile`,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`
+                            }
+                        }
+                    );
+
+                    const result = await response.json();
+
+                    if (response.status === 401) {
+                        localStorage.removeItem("token");
+                        localStorage.removeItem("user");
+                        window.location.href = "login.html";
+                        return;
+                    }
+
+                    if (!response.ok) {
+                        throw new Error(
+                            result.message || "Unable to load profile"
+                        );
+                    }
+
+                    const user = result.user;
+
+                    if (!user) {
+                        throw new Error("User details not found");
+                    }
+
+                    if (user.name) {
+                        document.getElementById(
+                            "headerProfileName"
+                        ).textContent = user.name;
+                    }
+
+                    const profileImage = document.getElementById(
+                        "headerProfileImage"
+                    );
+
+                    if (user.profileImage) {
+                        profileImage.src =
+                            `${API_BASE_URL}/uploads/${encodeURIComponent(user.profileImage)}`;
+                    }
+
+                    localStorage.setItem("user", JSON.stringify({
+                        id: user._id,
+                        name: user.name,
+                        email: user.email,
+                        profileImage: user.profileImage
+                    }));
+
+                } catch (error) {
+                    console.error("Profile loading error:", error);
+                }
+            }
+
+            loadHeaderProfile();
+
+
+            // DEFAULT PHOTO IF IMAGE FAILS
+            document.getElementById("headerProfileImage")
+                .addEventListener("error", function () {
+                    this.src = "https://placehold.co/40x40?text=P";
+                });
+
+
+            // LOGOUT
+            document.getElementById("logoutBtn")
+                .addEventListener("click", function () {
+
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("user");
+
+                    window.location.href = "login.html";
+                });
+
+
+            // DARK MODE
+            const themeToggle =
+                document.getElementById("themeToggle");
+
+            const savedTheme =
+                localStorage.getItem("taskflowTheme");
+
+            if (savedTheme === "dark") {
+                document.body.classList.add("dark-mode");
+                themeToggle.textContent = "☀️ Light Mode";
+            } else {
+                themeToggle.textContent = "🌙 Dark Mode";
+            }
+
+            themeToggle.addEventListener("click", function () {
+
+                document.body.classList.toggle("dark-mode");
+
+                const isDark =
+                    document.body.classList.contains("dark-mode");
+
+                localStorage.setItem(
+                    "taskflowTheme",
+                    isDark ? "dark" : "light"
+                );
+
+                themeToggle.textContent =
+                    isDark ? "☀️ Light Mode" : "🌙 Dark Mode";
+            });
+
+        });
+    </script>
+
+</body>
+</html>

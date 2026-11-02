@@ -1,0 +1,165 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - TaskFlow</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<header>
+    <h2>TaskFlow</h2>
+
+    <nav>
+        <a href="dashboard.html">Dashboard</a>
+
+        <button id="themeToggle" class="theme-btn" type="button">
+            🌙 Dark Mode
+        </button>
+
+        <button id="logoutBtn" class="btn" type="button">
+            Logout
+        </button>
+    </nav>
+</header>
+
+<main class="dashboard">
+
+    <div class="welcome">
+        <h1>My Profile</h1>
+        <p>Manage your personal account information.</p>
+    </div>
+
+    <!-- PROFILE PHOTO SECTION -->
+    <section class="task-section">
+
+        <h2>Profile Photo</h2>
+
+        <div class="profile-photo-section">
+
+            <img
+                id="profilePreview"
+                src="https://placehold.co/120x120?text=Profile"
+                alt="Profile Photo"
+                width="120"
+                height="120"
+                style="border-radius: 50%; object-fit: cover;"
+            >
+
+            <br><br>
+
+            <label for="profileImage">Choose Profile Photo</label>
+
+            <input
+                type="file"
+                id="profileImage"
+                accept="image/png, image/jpeg"
+            >
+
+            <button
+                type="button"
+                id="uploadPhotoBtn"
+                class="btn"
+            >
+                Upload Photo
+            </button>
+
+            <p id="photoMessage"></p>
+
+        </div>
+
+    </section>
+
+
+    <!-- PERSONAL INFORMATION -->
+    <section class="task-section">
+
+        <h2>Personal Information</h2>
+
+        <form id="profileForm">
+
+            <label for="profileName">Full Name</label>
+
+            <input
+                type="text"
+                id="profileName"
+                placeholder="Enter your name"
+                required
+            >
+
+            <label for="profileEmail">Email Address</label>
+
+            <input
+                type="email"
+                id="profileEmail"
+                placeholder="Enter your email"
+                required
+            >
+
+            <button type="submit" class="btn">
+                Update Profile
+            </button>
+
+            <p id="profileMessage"></p>
+
+        </form>
+
+    </section>
+
+
+    <!-- CHANGE PASSWORD -->
+    <section class="task-section">
+
+        <h2>Change Password</h2>
+
+        <form id="passwordForm">
+
+            <label for="oldPassword">Current Password</label>
+
+            <input
+                type="password"
+                id="oldPassword"
+                placeholder="Enter current password"
+                required
+            >
+
+            <label for="newPassword">New Password</label>
+
+            <input
+                type="password"
+                id="newPassword"
+                placeholder="Enter new password"
+                minlength="6"
+                required
+            >
+
+            <label for="confirmPassword">Confirm New Password</label>
+
+            <input
+                type="password"
+                id="confirmPassword"
+                placeholder="Confirm new password"
+                minlength="6"
+                required
+            >
+
+            <button type="submit" class="btn">
+                Change Password
+            </button>
+
+            <p id="passwordMessage"></p>
+
+        </form>
+
+    </section>
+
+</main>
+
+<script src="js/config.js"></script>
+<script src="js/profile.js"></script>
+
+</body>
+</html>

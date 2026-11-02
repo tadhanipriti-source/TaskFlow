@@ -1,0 +1,709 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow - Time Tracking</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        .time-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 25px;
+        }
+
+        .time-container > h1 {
+            margin-bottom: 8px;
+        }
+
+        .time-container > p {
+            margin-bottom: 25px;
+            color: #777;
+        }
+
+        .timer-card,
+        .time-history {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+        }
+
+        .timer-card {
+            text-align: center;
+        }
+
+        .timer-display {
+            font-size: 48px;
+            font-weight: bold;
+            margin: 25px 0;
+            color: #635bdb;
+        }
+
+        .timer-card select {
+            padding: 12px;
+            width: 100%;
+            max-width: 400px;
+            margin: 15px auto;
+            display: block;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .timer-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .timer-buttons button {
+            padding: 11px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: #635bdb;
+            color: white;
+            font-weight: 600;
+        }
+
+        .timer-buttons button:hover {
+            opacity: 0.85;
+        }
+
+        #pauseBtn {
+            background: #e89b35;
+        }
+
+        #resetBtn {
+            background: #777;
+        }
+
+        #timerMessage {
+            margin-top: 18px;
+        }
+
+        .history-list {
+            display: grid;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .history-item {
+            padding: 18px;
+            border: 1px solid #e5e2f5;
+            border-radius: 10px;
+            background: #faf9ff;
+        }
+
+        .history-item h3 {
+            margin-bottom: 8px;
+            color: #635bdb;
+        }
+
+        .history-item p {
+            margin: 5px 0;
+            color: #666;
+        }
+
+        .history-empty {
+            text-align: center;
+            padding: 25px;
+            color: #777;
+        }
+
+        body.dark-mode .timer-card,
+        body.dark-mode .time-history {
+            background: #222638;
+            color: white;
+        }
+
+        body.dark-mode .timer-card select {
+            background: #151827;
+            color: white;
+            border-color: #444;
+        }
+
+        body.dark-mode .history-item {
+            background: #292d42;
+            border-color: #41465e;
+        }
+
+        body.dark-mode .history-item p {
+            color: #ccc;
+        }
+
+        @media (max-width: 600px) {
+            .time-container {
+                width: 94%;
+                padding: 15px;
+            }
+
+            .timer-card,
+            .time-history {
+                padding: 20px;
+            }
+
+            .timer-display {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h2>TaskFlow</h2>
+
+        <nav>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="dashboard.html#myTasks">Tasks</a>
+            <a href="time-tracking.html">Time Tracking</a>
+            <a href="profile.html">My Profile</a>
+
+            <button id="themeToggle" class="theme-btn" type="button">
+                🌙 Dark Mode
+            </button>
+
+            <button id="logoutBtn" class="btn" type="button">
+                Logout
+            </button>
+        </nav>
+    </header>
+
+    <main class="time-container">
+
+        <h1>Time Tracking</h1>
+        <p>Track the time you spend on your tasks.</p>
+
+        <!-- Timer -->
+        <section class="timer-card">
+
+            <h2>Task Timer</h2>
+
+            <select id="taskSelect">
+                <option value="">Select a Task</option>
+            </select>
+
+            <div class="timer-display" id="timerDisplay">
+                00:00:00
+            </div>
+
+            <div class="timer-buttons">
+                <button id="startBtn" type="button">Start</button>
+                <button id="pauseBtn" type="button">Pause</button>
+                <button id="resetBtn" type="button">Reset</button>
+            </div>
+
+            <p id="timerMessage"></p>
+
+        </section>
+
+        <!-- History -->
+        <section class="time-history">
+
+            <h2>Time Tracking History</h2>
+
+            <div id="historyList" class="history-list">
+                <p class="history-empty">Loading history...</p>
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="js/config.js"></script>
+
+    <script>
+
+        // ==============================
+        // Login Check
+        // ==============================
+
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+            window.location.href = "login.html";
+        }
+
+
+        // ==============================
+        // API Helper
+        // ==============================
+
+        async function apiRequest(endpoint, method = "GET", body = null) {
+
+            const options = {
+                method: method,
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+            };
+
+            if (body) {
+                options.body = JSON.stringify(body);
+            }
+
+            const response = await fetch(
+                `${API_BASE_URL}/api/time-tracking${endpoint}`,
+                options
+            );
+
+            const data = await response.json();
+
+            if (response.status === 401) {
+                localStorage.removeItem("token");
+                localStorage.removeItem("user");
+                window.location.href = "login.html";
+                throw new Error("Session expired. Please login again.");
+            }
+
+            if (!response.ok) {
+                throw new Error(data.message || "Something went wrong");
+            }
+
+            return data;
+        }
+
+
+        // ==============================
+        // Logout
+        // ==============================
+
+        document.getElementById("logoutBtn").addEventListener("click", () => {
+
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+
+            window.location.href = "login.html";
+
+        });
+
+
+        // ==============================
+        // Dark Mode
+        // ==============================
+
+        const themeToggle = document.getElementById("themeToggle");
+
+        if (localStorage.getItem("taskflowTheme") === "dark") {
+            document.body.classList.add("dark-mode");
+        }
+
+        function updateThemeButton() {
+
+            themeToggle.textContent =
+                document.body.classList.contains("dark-mode")
+                    ? "☀️ Light Mode"
+                    : "🌙 Dark Mode";
+
+        }
+
+        updateThemeButton();
+
+        themeToggle.addEventListener("click", () => {
+
+            document.body.classList.toggle("dark-mode");
+
+            localStorage.setItem(
+                "taskflowTheme",
+                document.body.classList.contains("dark-mode")
+                    ? "dark"
+                    : "light"
+            );
+
+            updateThemeButton();
+
+        });
+
+
+        // ==============================
+        // Timer Variables
+        // ==============================
+
+        let timerInterval = null;
+        let activeEntry = null;
+        let seconds = 0;
+
+        const timerDisplay = document.getElementById("timerDisplay");
+        const timerMessage = document.getElementById("timerMessage");
+        const taskSelect = document.getElementById("taskSelect");
+
+        function formatTime(totalSeconds) {
+
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const remainingSeconds = totalSeconds % 60;
+
+            return (
+                String(hours).padStart(2, "0") + ":" +
+                String(minutes).padStart(2, "0") + ":" +
+                String(remainingSeconds).padStart(2, "0")
+            );
+
+        }
+
+        function updateTimer() {
+
+            timerDisplay.textContent = formatTime(seconds);
+
+        }
+
+
+        // Calculate running timer from saved backend data
+        function calculateRunningTime() {
+
+            if (!activeEntry) return;
+
+            const previousSeconds = activeEntry.durationSeconds || 0;
+
+            const startedAt = new Date(activeEntry.startedAt).getTime();
+
+            const currentSeconds = Math.max(
+                0,
+                Math.floor((Date.now() - startedAt) / 1000)
+            );
+
+            seconds = previousSeconds + currentSeconds;
+
+            updateTimer();
+
+        }
+
+
+        function startLocalTimer() {
+
+            clearInterval(timerInterval);
+
+            calculateRunningTime();
+
+            timerInterval = setInterval(() => {
+                calculateRunningTime();
+            }, 1000);
+
+        }
+
+
+        // ==============================
+        // Start Timer
+        // ==============================
+
+        document.getElementById("startBtn").addEventListener("click", async () => {
+
+            const taskId = taskSelect.value;
+
+            if (!taskId) {
+                timerMessage.textContent = "Please select a task first.";
+                return;
+            }
+
+            try {
+
+                timerMessage.textContent = "Starting timer...";
+
+                const data = await apiRequest(
+                    "/start",
+                    "POST",
+                    { taskId }
+                );
+
+                activeEntry = data.entry;
+
+                taskSelect.value = activeEntry.task;
+
+                startLocalTimer();
+
+                timerMessage.textContent = "Timer is running.";
+
+            } catch (error) {
+
+                timerMessage.textContent = error.message;
+
+            }
+
+        });
+
+
+        // ==============================
+        // Pause Timer
+        // ==============================
+
+        document.getElementById("pauseBtn").addEventListener("click", async () => {
+
+            if (!activeEntry) {
+                timerMessage.textContent = "No running timer.";
+                return;
+            }
+
+            try {
+
+                timerMessage.textContent = "Saving time...";
+
+                const data = await apiRequest(
+                    "/pause",
+                    "POST"
+                );
+
+                clearInterval(timerInterval);
+                timerInterval = null;
+
+                seconds = data.entry.durationSeconds || 0;
+
+                activeEntry = null;
+
+                updateTimer();
+
+                timerMessage.textContent = "Timer paused and time saved!";
+
+                await loadHistory();
+
+            } catch (error) {
+
+                timerMessage.textContent = error.message;
+
+            }
+
+        });
+
+
+        // ==============================
+        // Reset Display
+        // ==============================
+
+        document.getElementById("resetBtn").addEventListener("click", async () => {
+
+            if (activeEntry) {
+
+                try {
+
+                    const data = await apiRequest("/pause", "POST");
+
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+
+                    activeEntry = null;
+
+                    seconds = 0;
+                    updateTimer();
+
+                    timerMessage.textContent =
+                        "Timer paused. Saved history is preserved.";
+
+                    await loadHistory();
+
+                } catch (error) {
+
+                    timerMessage.textContent = error.message;
+
+                }
+
+            } else {
+
+                seconds = 0;
+                updateTimer();
+
+                timerMessage.textContent =
+                    "Display reset. Saved history is preserved.";
+
+            }
+
+        });
+
+
+        // ==============================
+        // Load User Tasks
+        // ==============================
+
+        async function loadTasks() {
+
+            try {
+
+                const response = await fetch(
+                    `${API_BASE_URL}/api/tasks?limit=50`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    }
+                );
+
+                const data = await response.json();
+
+                if (response.status === 401) {
+                    localStorage.removeItem("token");
+                    window.location.href = "login.html";
+                    return;
+                }
+
+                if (!response.ok) {
+                    throw new Error(data.message || "Unable to load tasks");
+                }
+
+                const tasks = data.tasks || [];
+
+                taskSelect.innerHTML =
+                    '<option value="">Select a Task</option>';
+
+                tasks.forEach(task => {
+
+                    const option = document.createElement("option");
+
+                    option.value = task._id;
+                    option.textContent = task.title;
+
+                    taskSelect.appendChild(option);
+
+                });
+
+                if (tasks.length === 0) {
+                    timerMessage.textContent =
+                        "No tasks available. Add a task from Dashboard first.";
+                }
+
+            } catch (error) {
+
+                timerMessage.textContent = error.message;
+
+            }
+
+        }
+
+
+        // ==============================
+        // Load Tracking History
+        // ==============================
+
+        async function loadHistory() {
+
+            const historyList = document.getElementById("historyList");
+
+            try {
+
+                const data = await apiRequest("/history");
+
+                const history = data.history || [];
+
+                historyList.innerHTML = "";
+
+                if (history.length === 0) {
+
+                    historyList.innerHTML =
+                        '<p class="history-empty">No tracking records yet. Start and pause a timer to create your first record.</p>';
+
+                    return;
+
+                }
+
+                history.forEach(entry => {
+
+                    const item = document.createElement("div");
+
+                    item.className = "history-item";
+
+                    const taskName =
+                        entry.task?.title || "Task deleted";
+
+                    const date = new Date(entry.updatedAt).toLocaleString();
+
+                    const duration = formatTime(
+                        entry.durationSeconds || 0
+                    );
+
+                    const heading = document.createElement("h3");
+                    heading.textContent = taskName;
+
+                    const dateText = document.createElement("p");
+                    dateText.textContent = "Date: " + date;
+
+                    const durationText = document.createElement("p");
+                    durationText.textContent = "Time Tracked: " + duration;
+
+                    item.appendChild(heading);
+                    item.appendChild(dateText);
+                    item.appendChild(durationText);
+
+                    historyList.appendChild(item);
+
+                });
+
+            } catch (error) {
+
+                historyList.innerHTML = "";
+
+                const message = document.createElement("p");
+                message.className = "history-empty";
+                message.textContent = "Unable to load history: " + error.message;
+
+                historyList.appendChild(message);
+
+            }
+
+        }
+
+
+        // ==============================
+        // Restore Active Timer
+        // ==============================
+
+        async function loadActiveTimer() {
+
+            try {
+
+                const data = await apiRequest("/active");
+
+                if (data.entry) {
+
+                    activeEntry = data.entry;
+
+                    taskSelect.value = activeEntry.task._id;
+
+                    startLocalTimer();
+
+                    timerMessage.textContent =
+                        "Your previous timer is still running.";
+
+                } else {
+
+                    activeEntry = null;
+                    seconds = 0;
+                    updateTimer();
+
+                }
+
+            } catch (error) {
+
+                timerMessage.textContent = error.message;
+
+            }
+
+        }
+
+
+        // ==============================
+        // Initialize Page
+        // ==============================
+
+        async function initializeTimeTracking() {
+
+            await loadTasks();
+
+            await loadHistory();
+
+            await loadActiveTimer();
+
+        }
+
+        initializeTimeTracking();
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,1328 @@
+
+/* ==============================
+   TaskFlow - Main CSS
+================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #f5f6fc;
+    color: #25243a;
+    line-height: 1.6;
+    transition: 0.3s;
+}
+
+.container {
+    width: 92%;
+    max-width: 1450px;
+    margin: auto;
+}
+
+/* ==============================
+   Header
+================================ */
+
+.header {
+    background: #ffffff;
+    padding: 15px 0;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.header h2 {
+    color: #6555e8;
+    font-size: 25px;
+}
+
+.header-nav {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.header-nav a {
+    color: #444;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.header-nav a:hover {
+    color: #6555e8;
+}
+
+/* ==============================
+   Profile Dropdown
+================================ */
+
+.profile-dropdown {
+    position: relative;
+}
+
+.profile-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.profile-btn img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #6555e8;
+}
+
+.profile-menu {
+    display: none;
+    position: absolute;
+    top: 50px;
+    right: 0;
+    min-width: 180px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    z-index: 1000;
+}
+
+.profile-menu.show {
+    display: block;
+}
+
+.profile-menu a,
+.profile-menu button {
+    display: block;
+    width: 100%;
+    padding: 12px 15px;
+    border: none;
+    background: transparent;
+    color: #333;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.profile-menu a:hover,
+.profile-menu button:hover {
+    background: #f0edff;
+    color: #6555e8;
+}
+
+/* ==============================
+   Dashboard
+================================ */
+
+.dashboard-container {
+    padding-top: 30px;
+    padding-bottom: 50px;
+}
+
+.welcome-section {
+    margin-bottom: 25px;
+}
+
+.welcome-section h1 {
+    font-size: 28px;
+    color: #292747;
+    margin-bottom: 5px;
+}
+
+.welcome-section p {
+    color: #777;
+}
+
+/* ==============================
+   Statistics Cards
+================================ */
+
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: white;
+    padding: 25px;
+    border-radius: 14px;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eeeaff;
+    transition: 0.3s;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+}
+
+.stat-card h3 {
+    font-size: 15px;
+    color: #777;
+    font-weight: 600;
+}
+
+.stat-card h2 {
+    color: #6555e8;
+    font-size: 30px;
+    margin-top: 10px;
+}
+
+/* ==============================
+   Common Sections
+================================ */
+
+.task-form-section,
+.tasks-section {
+    background: white;
+    padding: 25px;
+    border-radius: 14px;
+    margin-bottom: 30px;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eeeaff;
+}
+
+.task-form-section h2,
+.tasks-section h2 {
+    font-size: 21px;
+    margin-bottom: 20px;
+    color: #292747;
+}
+
+/* ==============================
+   Form Layout
+================================ */
+
+#taskForm,
+#editTaskForm {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #444;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea,
+.task-filters input,
+.task-filters select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #ddd9f0;
+    border-radius: 8px;
+    outline: none;
+    font-size: 14px;
+    background: #fff;
+    color: #333;
+    transition: 0.3s;
+}
+
+.form-group textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus,
+.task-filters input:focus,
+.task-filters select:focus {
+    border-color: #6555e8;
+    box-shadow: 0 0 0 3px rgba(101, 85, 232, 0.12);
+}
+
+/* ==============================
+   Buttons
+================================ */
+
+button {
+    font-family: inherit;
+}
+
+#taskForm button,
+#editTaskForm button,
+.task-filters button,
+#closeModalBtn {
+    padding: 11px 20px;
+    border: none;
+    border-radius: 8px;
+    background: #6555e8;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#taskForm button:hover,
+#editTaskForm button:hover,
+.task-filters button:hover {
+    background: #5141d0;
+    transform: translateY(-1px);
+}
+
+#closeModalBtn {
+    background: #777;
+}
+
+#closeModalBtn:hover {
+    background: #555;
+}
+
+#taskMessage,
+#editMessage {
+    grid-column: 1 / -1;
+    font-size: 14px;
+}
+
+/* ==============================
+   Task Filters
+================================ */
+
+.task-filters {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr auto auto;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+#clearFilterBtn {
+    background: #777;
+}
+
+#clearFilterBtn:hover {
+    background: #555;
+}
+
+/* ==============================
+   Task List
+================================ */
+
+.task-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.task-card,
+.task-item {
+    background: #faf9ff;
+    border: 1px solid #e8e4ff;
+    border-radius: 12px;
+    padding: 20px;
+    transition: 0.3s;
+}
+
+.task-card:hover,
+.task-item:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
+    transform: translateY(-2px);
+}
+
+.task-card h3,
+.task-item h3 {
+    color: #302b55;
+    margin-bottom: 8px;
+}
+
+.task-card p,
+.task-item p {
+    color: #777;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.task-card button,
+.task-item button {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 6px;
+    background: #6555e8;
+    color: white;
+    cursor: pointer;
+    margin: 8px 5px 0 0;
+}
+
+.task-card button:hover,
+.task-item button:hover {
+    opacity: 0.85;
+}
+
+/* ==============================
+   Pagination
+================================ */
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 25px;
+    flex-wrap: wrap;
+}
+
+.pagination button {
+    padding: 8px 15px;
+    border: 1px solid #6555e8;
+    border-radius: 6px;
+    background: white;
+    color: #6555e8;
+    cursor: pointer;
+}
+
+.pagination button:hover,
+.pagination button.active {
+    background: #6555e8;
+    color: white;
+}
+
+/* ==============================
+   Edit Modal
+================================ */
+
+.edit-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    z-index: 2000;
+    overflow-y: auto;
+}
+
+.edit-modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    width: 100%;
+    max-width: 650px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 25px;
+    border-radius: 14px;
+}
+
+.modal-content h2 {
+    margin-bottom: 20px;
+}
+
+/* ==============================
+   Dark Mode
+================================ */
+
+body.dark-mode {
+    background: #171827;
+    color: #f5f5ff;
+}
+
+body.dark-mode .header,
+body.dark-mode .stat-card,
+body.dark-mode .task-form-section,
+body.dark-mode .tasks-section {
+    background: #222538;
+    border-color: #343951;
+}
+
+body.dark-mode .header h2,
+body.dark-mode .welcome-section h1,
+body.dark-mode .task-form-section h2,
+body.dark-mode .tasks-section h2 {
+    color: #ffffff;
+}
+
+body.dark-mode .header-nav a,
+body.dark-mode .profile-btn {
+    color: #eeeeff;
+}
+
+body.dark-mode .welcome-section p,
+body.dark-mode .stat-card h3 {
+    color: #b7bad0;
+}
+
+body.dark-mode .form-group label {
+    color: #eeeeff;
+}
+
+body.dark-mode .form-group input,
+body.dark-mode .form-group select,
+body.dark-mode .form-group textarea,
+body.dark-mode .task-filters input,
+body.dark-mode .task-filters select {
+    background: #171827;
+    color: white;
+    border-color: #41465e;
+}
+
+body.dark-mode .task-card,
+body.dark-mode .task-item {
+    background: #292d42;
+    border-color: #41465e;
+}
+
+body.dark-mode .task-card h3,
+body.dark-mode .task-item h3 {
+    color: white;
+}
+
+body.dark-mode .task-card p,
+body.dark-mode .task-item p {
+    color: #c2c4d5;
+}
+
+body.dark-mode .profile-menu {
+    background: #292d42;
+}
+
+body.dark-mode .profile-menu a,
+body.dark-mode .profile-menu button {
+    color: white;
+}
+
+body.dark-mode .profile-menu a:hover,
+body.dark-mode .profile-menu button:hover {
+    background: #41465e;
+}
+
+body.dark-mode .modal-content {
+    background: #222538;
+    color: white;
+}
+
+/* ==============================
+   Responsive Design
+================================ */
+
+@media (max-width: 900px) {
+
+    .stats-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .task-filters {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .task-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .container {
+        width: 94%;
+    }
+
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .header-nav {
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .stats-container {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .stat-card {
+        padding: 15px;
+    }
+
+    .stat-card h2 {
+        font-size: 24px;
+    }
+
+    #taskForm,
+    #editTaskForm {
+        grid-template-columns: 1fr;
+    }
+
+    .task-filters {
+        grid-template-columns: 1fr;
+    }
+
+    .task-form-section,
+    .tasks-section {
+        padding: 18px;
+    }
+
+    .welcome-section h1 {
+        font-size: 23px;
+    }
+}
+
+/* ==============================
+   Common Header - All Pages
+================================ */
+
+body > header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 16px 5%;
+    background: #ffffff;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+body > header h2 {
+    color: #6555e8;
+    font-size: 25px;
+    margin: 0;
+}
+
+body > header nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+body > header nav a {
+    color: #444;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+body > header nav a:hover {
+    color: #6555e8;
+}
+
+body > header nav button {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 7px;
+    background: #6555e8;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+body > header nav button:hover {
+    background: #5141d0;
+}
+
+/* Header Dark Mode */
+
+body.dark-mode > header {
+    background: #222538;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode > header nav a {
+    color: #eeeeff;
+}
+
+body.dark-mode > header nav a:hover {
+    color: #a99eff;
+}
+
+/* Mobile Header */
+
+@media (max-width: 650px) {
+    body > header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    body > header nav {
+        justify-content: flex-start;
+        gap: 12px;
+    }
+}
+
+/* =================================
+   MY PROFILE PAGE DESIGN
+================================= */
+
+body:has(#profileForm) {
+    background: #f5f6fc;
+}
+
+body:has(#profileForm) main {
+    max-width: 1000px;
+    width: 92%;
+    margin: 35px auto;
+}
+
+body:has(#profileForm) main > h1 {
+    font-size: 30px;
+    color: #292747;
+    margin-bottom: 5px;
+}
+
+body:has(#profileForm) main > p {
+    color: #777;
+    margin-bottom: 25px;
+}
+
+/* Profile Sections */
+
+body:has(#profileForm) main section {
+    background: #ffffff;
+    padding: 28px;
+    margin-bottom: 25px;
+    border-radius: 14px;
+    border: 1px solid #eeeaff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+body:has(#profileForm) main section h2 {
+    color: #292747;
+    font-size: 21px;
+    margin-bottom: 20px;
+}
+
+/* Profile Photo */
+
+#profilePreview {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid #6555e8;
+    display: block;
+    margin: 10px 0 20px;
+}
+
+#profileImage {
+    display: block;
+    margin: 12px 0;
+    max-width: 100%;
+}
+
+#uploadPhotoBtn {
+    background: #6555e8;
+    color: white;
+    border: none;
+    padding: 11px 22px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+/* Profile Forms */
+
+#profileForm,
+#passwordForm {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    align-items: end;
+}
+
+#profileForm label,
+#passwordForm label {
+    display: block;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 7px;
+}
+
+#profileForm input,
+#passwordForm input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #ddd9f0;
+    border-radius: 8px;
+    outline: none;
+    font-size: 14px;
+    background: #fff;
+    color: #333;
+}
+
+#profileForm input:focus,
+#passwordForm input:focus {
+    border-color: #6555e8;
+    box-shadow: 0 0 0 3px rgba(101, 85, 232, 0.12);
+}
+
+/* Form Buttons */
+
+#profileForm button,
+#passwordForm button {
+    background: #6555e8;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-weight: 600;
+    cursor: pointer;
+    min-height: 42px;
+}
+
+#profileForm button:hover,
+#passwordForm button:hover,
+#uploadPhotoBtn:hover {
+    background: #5141d0;
+}
+
+/* Messages */
+
+#photoMessage,
+#profileMessage,
+#passwordMessage {
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+/* Dark Mode */
+
+body.dark-mode:has(#profileForm) {
+    background: #171827;
+}
+
+body.dark-mode:has(#profileForm) main > h1,
+body.dark-mode:has(#profileForm) main section h2 {
+    color: white;
+}
+
+body.dark-mode:has(#profileForm) main section {
+    background: #222538;
+    border-color: #343951;
+}
+
+body.dark-mode #profileForm label,
+body.dark-mode #passwordForm label {
+    color: #eeeeff;
+}
+
+body.dark-mode #profileForm input,
+body.dark-mode #passwordForm input {
+    background: #171827;
+    color: white;
+    border-color: #41465e;
+}
+
+/* Responsive */
+
+@media (max-width: 650px) {
+    body:has(#profileForm) main {
+        width: 94%;
+    }
+
+    body:has(#profileForm) main section {
+        padding: 18px;
+    }
+
+    #profileForm,
+    #passwordForm {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =====================================
+   TASKFLOW DASHBOARD CSS FIX
+   Add this code at the END of style.css
+===================================== */
+
+/* Header Navigation */
+.header .container {
+    width: 92%;
+    max-width: 1450px;
+    margin: auto;
+}
+
+.header-nav a.active {
+    color: #6555e8;
+}
+
+/* Profile Dropdown */
+.profile-dropdown > button {
+    background: transparent;
+    border: none;
+    color: #444;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    min-width: 180px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    overflow: hidden;
+    z-index: 1000;
+}
+
+.dropdown-content.show {
+    display: block;
+}
+
+.dropdown-content a,
+.dropdown-content button {
+    display: block;
+    width: 100%;
+    padding: 12px 15px;
+    border: none;
+    background: transparent;
+    color: #333;
+    text-align: left;
+    text-decoration: none;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.dropdown-content a:hover,
+.dropdown-content button:hover {
+    background: #f0edff;
+    color: #6555e8;
+}
+
+/* Welcome Section */
+.welcome-section h1 {
+    font-size: 28px;
+    color: #292747;
+}
+
+/* Statistics Cards */
+.stat-card p {
+    color: #6555e8;
+    font-size: 30px;
+    font-weight: 700;
+    margin-top: 10px;
+}
+
+/* Add Task Form */
+#taskForm {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+#taskForm .form-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+#taskForm button.btn-primary,
+#editTaskForm button.btn-primary {
+    width: fit-content;
+    padding: 12px 25px;
+    background: #6555e8;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background: #5141d0;
+}
+
+.btn-secondary {
+    padding: 12px 20px;
+    background: #777;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* Task Filters */
+.filter-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr auto auto;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.filter-container input,
+.filter-container select {
+    width: 100%;
+    min-width: 0;
+    padding: 12px 14px;
+    border: 1px solid #ddd9f0;
+    border-radius: 8px;
+    outline: none;
+    background: white;
+    color: #333;
+    font-size: 14px;
+}
+
+.filter-container input:focus,
+.filter-container select:focus {
+    border-color: #6555e8;
+    box-shadow: 0 0 0 3px rgba(101,85,232,0.12);
+}
+
+/* Edit Modal */
+#editModal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    z-index: 2000;
+    overflow-y: auto;
+}
+
+#editModal.show {
+    display: flex;
+}
+
+.modal-content {
+    width: 100%;
+    max-width: 650px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: white;
+    padding: 25px;
+    border-radius: 14px;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.modal-header h2 {
+    margin: 0;
+}
+
+#closeModalBtn {
+    width: 35px;
+    height: 35px;
+    padding: 0;
+    font-size: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Edit Form */
+#editTaskForm {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Task Message */
+#taskMessage,
+#editMessage {
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+/* Dark Mode Fixes */
+body.dark-mode .stat-card p {
+    color: #a99eff;
+}
+
+body.dark-mode .profile-dropdown > button {
+    color: white;
+}
+
+body.dark-mode .dropdown-content {
+    background: #292d42;
+}
+
+body.dark-mode .dropdown-content a,
+body.dark-mode .dropdown-content button {
+    color: white;
+}
+
+body.dark-mode .dropdown-content a:hover,
+body.dark-mode .dropdown-content button:hover {
+    background: #41465e;
+}
+
+body.dark-mode .filter-container input,
+body.dark-mode .filter-container select {
+    background: #171827;
+    color: white;
+    border-color: #41465e;
+}
+
+body.dark-mode .modal-content {
+    background: #222538;
+    color: white;
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+    .filter-container {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .header-content {
+        align-items: flex-start;
+    }
+
+    .header-nav {
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    #taskForm .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .filter-container {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-card p {
+        font-size: 24px;
+    }
+
+    .modal-content {
+        padding: 18px;
+    }
+}
+
+/* FIX: My Account Dropdown */
+
+.profile-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+#profileMenuBtn {
+    padding: 10px 15px;
+    background: #ffffff;
+    color: #333333;
+    border: 1px solid #6555e8;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#profileMenuBtn:hover {
+    background: #f0edff;
+}
+
+#profileDropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 180px;
+    background: #ffffff;
+    border: 1px solid #eeeaff;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    z-index: 9999;
+}
+
+#profileDropdown.show {
+    display: block;
+}
+
+#profileDropdown a,
+#profileDropdown button {
+    display: block;
+    width: 100%;
+    padding: 12px 15px;
+    background: transparent;
+    border: none;
+    color: #333333;
+    text-align: left;
+    text-decoration: none;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#profileDropdown a:hover,
+#profileDropdown button:hover {
+    background: #f0edff;
+    color: #6555e8;
+}
+
+/* Dropdown Dark Mode */
+body.dark-mode #profileMenuBtn {
+    background: #292d42;
+    color: white;
+    border-color: #6555e8;
+}
+
+body.dark-mode #profileDropdown {
+    background: #292d42;
+    border-color: #41465e;
+}
+
+body.dark-mode #profileDropdown a,
+body.dark-mode #profileDropdown button {
+    color: white;
+}
+
+body.dark-mode #profileDropdown a:hover,
+body.dark-mode #profileDropdown button:hover {
+    background: #41465e;
+}
+
+/* Dashboard Header Profile */
+.profile-dropdown {
+    position: relative;
+}
+
+.profile-btn {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 7px 12px;
+    border: 1px solid #e5e1f5;
+    border-radius: 10px;
+    background: white;
+    cursor: pointer;
+    color: #333;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.profile-btn img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #6555e8;
+}
+
+#profileDropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 180px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.15);
+    overflow: hidden;
+    z-index: 9999;
+}
+
+#profileDropdown.show {
+    display: block;
+}
+
+#profileDropdown a,
+#profileDropdown button {
+    display: block;
+    width: 100%;
+    padding: 13px 15px;
+    border: none;
+    background: white;
+    color: #333;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+#profileDropdown a:hover,
+#profileDropdown button:hover {
+    background: #f0edff;
+    color: #6555e8;
+}
+
+body.dark-mode .profile-btn {
+    background: #292d42;
+    color: white;
+    border-color: #41465e;
+}
+
+body.dark-mode #profileDropdown,
+body.dark-mode #profileDropdown a,
+body.dark-mode #profileDropdown button {
+    background: #292d42;
+    color: white;
+}
+
+body.dark-mode #profileDropdown a:hover,
+body.dark-mode #profileDropdown button:hover {
+    background: #41465e;
+}
+/* Due Date Calendar Icon */
+input[type="date"] {
+    appearance: auto;
+    -webkit-appearance: auto;
+    color-scheme: light;
+    cursor: pointer;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    display: block;
+    cursor: pointer;
+    opacity: 1;
+    width: 18px;
+    height: 18px;
+}
+
+/* Dark Mode */
+body.dark-mode input[type="date"] {
+    color-scheme: dark;
+}
